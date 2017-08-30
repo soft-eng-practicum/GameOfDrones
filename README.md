@@ -7,4 +7,6 @@ Members
 
 Steven Beteag
 
+Matthew Xiong
+
 Gabriel Mezquita
