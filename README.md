@@ -8,6 +8,7 @@ Members and Project Roles
 **1. Steven Beteag**
 
 **2. Matthew Xiong**
+
 **- Documentation lead**: Setup documentation conventions for code and delegate work. Manage presentations, reports, and licensing documentation
 
 **3. Gabriel Mezquita**
