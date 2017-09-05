@@ -1,9 +1,9 @@
 # GameOfDrones
--Repo: https://github.com/soft-eng-practicum/GameOfDrones
+- Repo: https://github.com/soft-eng-practicum/GameOfDrones
 
--Slack channel: https://ggc-dev.slack.com/messages/G6R5FMW-TB/
+- Slack channel: https://ggc-dev.slack.com/messages/G6R5FMW-TB/
 
--JIRA: https://www.atlassian.com/software/jira
+- JIRA: https://www.atlassian.com/software/jira
 
 Members and Project Roles
 -------------------------
