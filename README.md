@@ -11,8 +11,8 @@ Members and Project Roles
 
 3. Gabriel Mezquita
 
-4. Tony Neese
-
 - UI/UX design: User Interface and User eXperience. Make mock UI designs and user-friendly navigation
 - Team manager/Client liaison: Sprint planning, and time accounting for the team. Communications, demos, and negotiations with client, what was done and planned to handle client's requirements
+
+4. Tony Neese
 
