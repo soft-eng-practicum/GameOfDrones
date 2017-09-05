@@ -17,3 +17,6 @@ Members and Project Roles
 - **Team manager/Client liaison**: Sprint planning, and time accounting for the team. Communications, demos, and negotiations with client, what was done and planned to handle client's requirements
 
 **4. Tony Neese**
+
+- **Code Architecture/Lead Programmer**: Framework, Components, Coding Style
+- **Testing Lead**: Setup testing framework and conventions. Use continuous integration to test at each commit/push.
