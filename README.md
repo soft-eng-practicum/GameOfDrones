@@ -1,11 +1,14 @@
 # GameOfDrones
-Repo: https://github.com/soft-eng-practicum/GameOfDrones
+-Repo: https://github.com/soft-eng-practicum/GameOfDrones
 
-Slack channel: https://ggc-dev.slack.com/messages/G6R5FMWTB/
+-Slack channel: https://ggc-dev.slack.com/messages/G6R5FMW-TB/
+
+-JIRA: https://www.atlassian.com/software/jira
 
 Members and Project Roles
 -------------------------
 **1. Steven Beteag**
+- **Data modeler**: Database, data files, server-client structure
 
 **2. Matthew Xiong**
 
