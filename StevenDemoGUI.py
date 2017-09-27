@@ -71,6 +71,11 @@ class App(QWidget):
         land_btn.move(280, 180)
         land_btn.clicked.connect(self.land)
 
+        reset_btn = QPushButton('Reset', self)
+        reset_btn.setToolTip('Reset')
+        reset_btn.move(280, 210)
+        reset_btn.clicked.connect(self.reset)
+
         self.show()
 
     @pyqtSlot(name="forward")
@@ -134,6 +139,12 @@ class App(QWidget):
         while drone.state.fly_mask:
             drone.land()
         print("landing")
+
+    @pyqtSlot(name="Reset")
+    def reset(self):
+        while not drone.state.fly_mask:
+            drone.state.emergency_mask = False
+        print("drone reset")
 
 
 if __name__ == '__main__':
