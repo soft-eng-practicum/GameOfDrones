@@ -17,7 +17,7 @@ class App(QWidget):
         self.width = 420
         self.height = 260
         self.initUI()
-        self.setWindowFlags(Union=None, Qt_WindowFlags=())
+        # self.setWindowFlags(Union=None, Qt_WindowFlags=())
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -73,7 +73,7 @@ class App(QWidget):
         land_btn.move(280, 180)
         land_btn.clicked.connect(self.land)
 
-        reset_btn = QPushButton('Reset', self)
+        reset_btn = QPushButton('&Reset', self)
         reset_btn.setToolTip('Reset')
         reset_btn.move(280, 210)
         reset_btn.clicked.connect(self.reset)
