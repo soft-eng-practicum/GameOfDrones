@@ -1,17 +1,16 @@
+from random import randint
 from threading import Thread
 from time import sleep
 
+import sys
 from pyardrone import ARDrone
 
 from src.Logger import Logger
-from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QAction
 from PyQt5.QtCore import pyqtSlot
 
 
 # import cv2
-
-# drone = ARDrone()
-
 
 class App(QWidget):
     def __init__(self):
@@ -24,11 +23,13 @@ class App(QWidget):
         self.initUI()
         self.logger = Logger()
         self.drone = ARDrone()
-        self.demodata = ['a', 'b', 'c']
 
     def initUI(self):
         self.setWindowTitle(self.title)
         self.setGeometry(self.left, self.top, self.width, self.height)
+
+        quit = QAction("Quit", self)
+        quit.triggered.connect(self.closer)
 
         forwards_btn = QPushButton('&w', self)
         forwards_btn.setToolTip('Moves the drone forward')
@@ -164,16 +165,17 @@ class App(QWidget):
         print("drone reset")
 
     def begin_log(self):
+        "Starts the thread and runs log_data below"
         self.logger.currently_logging = True
         log_thread = Thread(target=self.log_data)
         log_thread.start()
 
     def log_data(self):
+        "Writes data to the CSV every .25 seconds"
         while self.logger.currently_logging:
-            self.logger.writer(self.demodata)
-            sleep(2)
+            self.logger.writer([str(randint(1, 10)) for i in range(8)])
+            sleep(.25)
 
-# if __name__ == '__main__':
-#     app = QApplication(sys.argv)
-#     ex = App()
-#     sys.exit(app.exec_())
+    def closer(self):
+        self.close()
+        sys.exit(self.exec_)

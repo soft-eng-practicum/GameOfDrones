@@ -1,5 +1,4 @@
 from datetime import date
-from time import sleep
 
 
 class Logger:
@@ -16,9 +15,3 @@ class Logger:
         "Writes a single row to the CSV"
         with open(self.file, 'a') as f:
             f.write("{}\n".format(",".join(info)))
-
-    def constant_write(self):
-        "This won't be necessary when the navdata is working - just for testing purposes"
-        for i in range(10):
-            self.writer(['a', 'b', 'c'])
-            sleep(1)
