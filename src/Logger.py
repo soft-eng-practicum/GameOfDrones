@@ -6,6 +6,7 @@ class Logger:
     "Class to handle writing to the CSV file"
 
     def __init__(self):
+        self.currently_logging = False
         self.file = "output.csv"
         with open(self.file, 'w') as f:
             f.write("Flight log {}\n".format(date.today()))

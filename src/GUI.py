@@ -1,8 +1,13 @@
+from threading import Thread
+from time import sleep
+
 from pyardrone import ARDrone
 
 from src.Logger import Logger
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtCore import pyqtSlot
+
+
 # import cv2
 
 # drone = ARDrone()
@@ -19,6 +24,7 @@ class App(QWidget):
         self.initUI()
         self.logger = Logger()
         self.drone = ARDrone()
+        self.demodata = ['a', 'b', 'c']
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -138,15 +144,17 @@ class App(QWidget):
     def takeoff(self):
         # print(self.drone.navdata)
         self.logger = Logger()
-        while not self.drone.state.fly_mask:
-            self.drone.takeoff()
+        self.begin_log()
+        # while not self.drone.state.fly_mask:
+        #     self.drone.takeoff()
         print("taking off")
 
     @pyqtSlot(name="land")
     def land(self):
         # print(self.drone.navdata)
-        while self.drone.state.fly_mask:
-            self.drone.land()
+        # while self.drone.state.fly_mask:
+        #     self.drone.land()
+        self.logger.currently_logging = False
         print("landing")
 
     @pyqtSlot(name="Reset")
@@ -155,6 +163,15 @@ class App(QWidget):
             self.drone.state.emergency_mask = False
         print("drone reset")
 
+    def begin_log(self):
+        self.logger.currently_logging = True
+        log_thread = Thread(target=self.log_data)
+        log_thread.start()
+
+    def log_data(self):
+        while self.logger.currently_logging:
+            self.logger.writer(self.demodata)
+            sleep(2)
 
 # if __name__ == '__main__':
 #     app = QApplication(sys.argv)
