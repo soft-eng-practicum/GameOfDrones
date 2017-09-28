@@ -1,11 +1,11 @@
 from pyardrone import ARDrone
 
-import sys
-from PyQt5 import QtCore
+from src.Logger import Logger
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton
 from PyQt5.QtCore import pyqtSlot
+# import cv2
 
-drone = ARDrone()
+# drone = ARDrone()
 
 
 class App(QWidget):
@@ -17,7 +17,8 @@ class App(QWidget):
         self.width = 420
         self.height = 260
         self.initUI()
-        # self.setWindowFlags(Union=None, Qt_WindowFlags=())
+        self.logger = Logger()
+        self.drone = ARDrone()
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -78,78 +79,84 @@ class App(QWidget):
         reset_btn.move(280, 210)
         reset_btn.clicked.connect(self.reset)
 
+        # close_btn = QPushButton('&X Close (use this not the window)', self)
+        # close_btn.setToolTip('Reset')
+        # close_btn.move(280, 10)
+        # close_btn.clicked.connect(self.quit)
+
         self.show()
 
     @pyqtSlot(name="forward")
     def forward(self):
-        # print(drone.navdata)
-        drone.move(forward=1)
+        # print(self.drone.navdata)
+        self.drone.move(forward=1)
         print("moving drone forward")
 
     @pyqtSlot(name="backward")
     def backward(self):
-        # print(drone.navdata)
-        drone.move(backward=1)
+        # print(self.drone.navdata)
+        self.drone.move(backward=1)
         print("moving drone backward")
 
     @pyqtSlot(name="right")
     def right(self):
-        # print(drone.navdata)
-        drone.move(right=1)
+        # print(self.drone.navdata)
+        self.drone.move(right=1)
         print("moving drone right")
 
     @pyqtSlot(name="move_left")
     def move_left(self):
-        # print(drone.navdata)
-        drone.move(left=1)
+        # print(self.drone.navdata)
+        self.drone.move(left=1)
         print("moving drone left")
 
     @pyqtSlot(name="cw")
     def cw(self):
-        # print(drone.navdata)
-        drone.move(cw=1)
+        # print(self.drone.navdata)
+        self.drone.move(cw=1)
         print("rotating clockwise")
 
     @pyqtSlot(name="ccw")
     def ccw(self):
-        # print(drone.navdata)
-        drone.move(ccw=1)
+        # print(self.drone.navdata)
+        self.drone.move(ccw=1)
         print("rotating counter-clockwise")
 
     @pyqtSlot(name="IncreaseAlt")
     def increase_alt(self):
-        # print(drone.navdata)
-        drone.move(up=1)
+        # print(self.drone.navdata)
+        self.drone.move(up=1)
         print("increasing altitude")
 
     @pyqtSlot(name="DecreaseAlt")
     def decrease_alt(self):
-        # print(drone.navdata)
-        drone.move(down=1)
+        # print(self.drone.navdata)
+        self.drone.move(down=1)
         print("decreasing altitude")
 
     @pyqtSlot(name="takeoff")
     def takeoff(self):
-        # print(drone.navdata)
-        while not drone.state.fly_mask:
-            drone.takeoff()
+        # print(self.drone.navdata)
+        self.logger = Logger()
+        while not self.drone.state.fly_mask:
+            self.drone.takeoff()
         print("taking off")
 
     @pyqtSlot(name="land")
     def land(self):
-        # print(drone.navdata)
-        while drone.state.fly_mask:
-            drone.land()
+        # print(self.drone.navdata)
+        while self.drone.state.fly_mask:
+            self.drone.land()
         print("landing")
 
     @pyqtSlot(name="Reset")
     def reset(self):
-        while not drone.state.fly_mask:
-            drone.state.emergency_mask = False
+        while not self.drone.state.fly_mask:
+            self.drone.state.emergency_mask = False
         print("drone reset")
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    ex = App()
-    sys.exit(app.exec_())
+# if __name__ == '__main__':
+#     app = QApplication(sys.argv)
+#     ex = App()
+#     sys.exit(app.exec_())
