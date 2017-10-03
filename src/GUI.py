@@ -40,57 +40,57 @@ class App(QWidget):
 
         forwards_btn = QPushButton('\u25b2', self)
         forwards_btn.setToolTip('Moves the drone forward')
-        forwards_btn.move(100, 80)
+        forwards_btn.move(100, 630)
         forwards_btn.clicked.connect(self.forward)
 
         backwards_btn = QPushButton('\u25bc', self)
         backwards_btn.setToolTip('Moves the drone backward')
-        backwards_btn.move(100, 140)
+        backwards_btn.move(100, 690)
         backwards_btn.clicked.connect(self.backward)
 
         right_btn = QPushButton('\u25b6', self)
         right_btn.setToolTip('Moves the drone right')
-        right_btn.move(160, 110)
+        right_btn.move(160, 660)
         right_btn.clicked.connect(self.right)
 
         left_btn = QPushButton('\u25c0', self)
         left_btn.setToolTip('Moves the drone move_left')
-        left_btn.move(40, 110)
+        left_btn.move(40, 660)
         left_btn.clicked.connect(self.move_left)
 
         cw_btn = QPushButton('\u27f3', self)
         cw_btn.setToolTip('Rotates the drone cw')
-        cw_btn.move(160, 40)
+        cw_btn.move(160, 590)
         cw_btn.clicked.connect(self.cw)
 
         ccw_btn = QPushButton('\u27f2', self)
         ccw_btn.setToolTip('Rotates the drone ccw')
-        ccw_btn.move(40, 40)
+        ccw_btn.move(40, 590)
         ccw_btn.clicked.connect(self.ccw)
 
         increase_alt_btn = QPushButton('\u21a5', self)
         increase_alt_btn.setToolTip('Increase Altitude')
-        increase_alt_btn.move(280, 50)
+        increase_alt_btn.move(280, 550)
         increase_alt_btn.clicked.connect(self.increase_alt)
 
         decrease_alt_btn = QPushButton('\u21a7', self)
         decrease_alt_btn.setToolTip('Decrease Altitude')
-        decrease_alt_btn.move(280, 80)
+        decrease_alt_btn.move(280, 580)
         decrease_alt_btn.clicked.connect(self.decrease_alt)
 
         takeoff_btn = QPushButton('\u21eb', self)
         takeoff_btn.setToolTip('Takeoff')
-        takeoff_btn.move(280, 150)
+        takeoff_btn.move(280, 650)
         takeoff_btn.clicked.connect(self.takeoff)
 
         land_btn = QPushButton('\u2913', self)
         land_btn.setToolTip('Land')
-        land_btn.move(280, 180)
+        land_btn.move(280, 680)
         land_btn.clicked.connect(self.land)
 
         reset_btn = QPushButton('\u238C', self)
         reset_btn.setToolTip('Reset')
-        reset_btn.move(280, 210)
+        reset_btn.move(280, 710)
         reset_btn.clicked.connect(self.reset)
 
         # close_btn = QPushButton('&X Close (use this not the window)', self)
@@ -102,43 +102,36 @@ class App(QWidget):
 
     @pyqtSlot(name="forward")
     def forward(self):
-        # print(self.drone.navdata)
         self.drone.move(forward=1)
         print("moving drone forward")
 
     @pyqtSlot(name="backward")
     def backward(self):
-        # print(self.drone.navdata)
         self.drone.move(backward=1)
         print("moving drone backward")
 
     @pyqtSlot(name="right")
     def right(self):
-        # print(self.drone.navdata)
         self.drone.move(right=1)
         print("moving drone right")
 
     @pyqtSlot(name="move_left")
     def move_left(self):
-        # print(self.drone.navdata)
         self.drone.move(left=1)
         print("moving drone left")
 
     @pyqtSlot(name="cw")
     def cw(self):
-        # print(self.drone.navdata)
         self.drone.move(cw=1)
         print("rotating clockwise")
 
     @pyqtSlot(name="ccw")
     def ccw(self):
-        # print(self.drone.navdata)
         self.drone.move(ccw=1)
         print("rotating counter-clockwise")
 
     @pyqtSlot(name="IncreaseAlt")
     def increase_alt(self):
-        # print(self.drone.navdata)
         self.drone.move(up=1)
         print("increasing altitude")
 
@@ -149,7 +142,6 @@ class App(QWidget):
 
     @pyqtSlot(name="takeoff")
     def takeoff(self):
-        # print(self.drone.navdata)
         self.logger = Logger()
         self.begin_log()
         while not self.drone.state.fly_mask:
@@ -158,7 +150,6 @@ class App(QWidget):
 
     @pyqtSlot(name="land")
     def land(self):
-        # print(self.drone.navdata)
         while self.drone.state.fly_mask:
             self.drone.land()
         self.logger.currently_logging = False
