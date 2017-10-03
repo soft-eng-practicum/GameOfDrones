@@ -1,9 +1,10 @@
-from random import randint
 from threading import Thread
 from time import sleep
 
 import sys
-from pyardrone import ARDrone
+
+from PyQt5.QtGui import QFont
+from pyardrone import ARDrone, at
 
 from src.Logger import Logger
 from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QAction
@@ -18,11 +19,17 @@ class App(QWidget):
         self.title = 'GameOfDrones Test GUI'
         self.left = 100
         self.top = 100
-        self.width = 420
-        self.height = 260
+        self.width = 1024
+        self.height = 768
         self.initUI()
         self.logger = Logger()
-        self.drone = ARDrone()
+        self.drone = ARDrone(connect=True)
+        self.drone.send(at.CONFIG('general:navdata_demo', True))
+        font = QFont()
+        font.setBold(True)
+        font.setPixelSize(18)
+        self.setFont(font)
+        # self.drone.navdata_ready.wait()
 
     def initUI(self):
         self.setWindowTitle(self.title)
@@ -31,57 +38,57 @@ class App(QWidget):
         quit = QAction("Quit", self)
         quit.triggered.connect(self.closer)
 
-        forwards_btn = QPushButton('&w', self)
+        forwards_btn = QPushButton('\u25b2', self)
         forwards_btn.setToolTip('Moves the drone forward')
         forwards_btn.move(100, 80)
         forwards_btn.clicked.connect(self.forward)
 
-        backwards_btn = QPushButton('&s', self)
+        backwards_btn = QPushButton('\u25bc', self)
         backwards_btn.setToolTip('Moves the drone backward')
         backwards_btn.move(100, 140)
         backwards_btn.clicked.connect(self.backward)
 
-        right_btn = QPushButton('&d', self)
+        right_btn = QPushButton('\u25b6', self)
         right_btn.setToolTip('Moves the drone right')
         right_btn.move(160, 110)
         right_btn.clicked.connect(self.right)
 
-        left_btn = QPushButton('&a', self)
+        left_btn = QPushButton('\u25c0', self)
         left_btn.setToolTip('Moves the drone move_left')
         left_btn.move(40, 110)
         left_btn.clicked.connect(self.move_left)
 
-        cw_btn = QPushButton('&e', self)
+        cw_btn = QPushButton('\u27f3', self)
         cw_btn.setToolTip('Rotates the drone cw')
         cw_btn.move(160, 40)
         cw_btn.clicked.connect(self.cw)
 
-        ccw_btn = QPushButton('&q', self)
+        ccw_btn = QPushButton('\u27f2', self)
         ccw_btn.setToolTip('Rotates the drone ccw')
         ccw_btn.move(40, 40)
         ccw_btn.clicked.connect(self.ccw)
 
-        increase_alt_btn = QPushButton('&IncreaseAlt', self)
+        increase_alt_btn = QPushButton('\u21a5', self)
         increase_alt_btn.setToolTip('Increase Altitude')
         increase_alt_btn.move(280, 50)
         increase_alt_btn.clicked.connect(self.increase_alt)
 
-        decrease_alt_btn = QPushButton('De&creaseAlt', self)
+        decrease_alt_btn = QPushButton('\u21a7', self)
         decrease_alt_btn.setToolTip('Decrease Altitude')
         decrease_alt_btn.move(280, 80)
         decrease_alt_btn.clicked.connect(self.decrease_alt)
 
-        takeoff_btn = QPushButton('&Takeoff', self)
+        takeoff_btn = QPushButton('\u21eb', self)
         takeoff_btn.setToolTip('Takeoff')
         takeoff_btn.move(280, 150)
         takeoff_btn.clicked.connect(self.takeoff)
 
-        land_btn = QPushButton('&Land', self)
+        land_btn = QPushButton('\u2913', self)
         land_btn.setToolTip('Land')
         land_btn.move(280, 180)
         land_btn.clicked.connect(self.land)
 
-        reset_btn = QPushButton('&Reset', self)
+        reset_btn = QPushButton('\u238C', self)
         reset_btn.setToolTip('Reset')
         reset_btn.move(280, 210)
         reset_btn.clicked.connect(self.reset)
@@ -137,7 +144,6 @@ class App(QWidget):
 
     @pyqtSlot(name="DecreaseAlt")
     def decrease_alt(self):
-        # print(self.drone.navdata)
         self.drone.move(down=1)
         print("decreasing altitude")
 
@@ -146,21 +152,21 @@ class App(QWidget):
         # print(self.drone.navdata)
         self.logger = Logger()
         self.begin_log()
-        # while not self.drone.state.fly_mask:
-        #     self.drone.takeoff()
+        while not self.drone.state.fly_mask:
+            self.drone.takeoff()
         print("taking off")
 
     @pyqtSlot(name="land")
     def land(self):
         # print(self.drone.navdata)
-        # while self.drone.state.fly_mask:
-        #     self.drone.land()
+        while self.drone.state.fly_mask:
+            self.drone.land()
         self.logger.currently_logging = False
         print("landing")
 
     @pyqtSlot(name="Reset")
     def reset(self):
-        while not self.drone.state.fly_mask:
+        if not self.drone.state.fly_mask:
             self.drone.state.emergency_mask = False
         print("drone reset")
 
@@ -173,8 +179,9 @@ class App(QWidget):
     def log_data(self):
         "Writes data to the CSV every .25 seconds"
         while self.logger.currently_logging:
-            self.logger.writer([str(randint(1, 10)) for i in range(8)])
+            self.logger.writer([self.logger.time, self.drone.navdata.demo])
             sleep(.25)
+            self.logger.time += .25
 
     def closer(self):
         self.close()
