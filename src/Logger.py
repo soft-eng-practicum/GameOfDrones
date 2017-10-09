@@ -3,7 +3,6 @@ from datetime import date
 
 class Logger:
     "Class to handle writing to the CSV file"
-
     def __init__(self):
         self.currently_logging = False
         self.file = "output.csv"
