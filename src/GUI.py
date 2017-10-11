@@ -170,7 +170,9 @@ class App(QWidget):
     def log_data(self):
         "Writes data to the CSV every .25 seconds"
         while self.logger.currently_logging:
-            self.logger.writer([self.logger.time, self.drone.navdata.demo])
+            self.logger.writer([self.logger.time, self.drone.navdata.demo.vx, self.drone.navdata.demo.vy,
+                                self.drone.navdata.demo.vz, self.drone.navdata.demo.theta, self.drone.navdata.demo.phi,
+                                self.drone.navdata.demo.psi, self.drone.navdata.demo.altitude])
             sleep(.25)
             self.logger.time += .25
 

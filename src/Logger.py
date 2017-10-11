@@ -21,8 +21,10 @@ class Logger:
             f.write("{}\n".format(",".join(info)))
 
     def saveFile(self):
+        print("Save initiated")
         if os.path.isfile("output.csv"):
             shutil.copy("output.csv", "Flight log {}.csv".format(datetime.now().strftime('%Y-%m-%d %H-%M')))
             os.remove("output.csv")
+            print("Save successful")
         else:
             print("No data to save - fly the drone again")

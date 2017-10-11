@@ -5,25 +5,10 @@
 # Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
-from threading import Thread
-from time import sleep
 
 from PyQt5 import QtCore, QtGui, QtWidgets
-from pyardrone import ARDrone, at
-
-from src.Logger import Logger
-
 
 class Ui_Form(object):
-    def __init__(self):
-        self.logger = Logger()
-        self.drone = ARDrone(connect=True)
-
-        self.drone.send(at.CONFIG('general:navdata_demo', True))
-        self.drone.navdata_ready.wait()
-
-        # self.drone.state.video_thread_on = 0
-
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(776, 567)
@@ -41,7 +26,7 @@ class Ui_Form(object):
         self.takeoffButton.setObjectName("takeoffButton")
         self.gridLayout.addWidget(self.takeoffButton, 0, 0, 1, 1)
         self.landButton = QtWidgets.QPushButton(Form)
-        # self.landButton.setEnabled(False)
+        self.landButton.setEnabled(False)
         self.landButton.setObjectName("landButton")
         self.gridLayout.addWidget(self.landButton, 1, 0, 1, 1)
         self.gridLayout_5.addLayout(self.gridLayout, 2, 5, 1, 1)
@@ -49,7 +34,7 @@ class Ui_Form(object):
         self.gridLayout_6.setObjectName("gridLayout_6")
         self.label = QtWidgets.QLabel(Form)
         self.label.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.label.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label.setObjectName("label")
         self.gridLayout_6.addWidget(self.label, 1, 0, 1, 1)
         self.xVelLabel = QtWidgets.QLabel(Form)
@@ -60,7 +45,7 @@ class Ui_Form(object):
         self.gridLayout_6.addWidget(self.yVelLabel, 2, 1, 1, 1)
         self.label_3 = QtWidgets.QLabel(Form)
         self.label_3.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.label_3.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_3.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_3.setObjectName("label_3")
         self.gridLayout_6.addWidget(self.label_3, 2, 0, 1, 1)
         self.zVelLabel = QtWidgets.QLabel(Form)
@@ -68,7 +53,7 @@ class Ui_Form(object):
         self.gridLayout_6.addWidget(self.zVelLabel, 3, 1, 1, 1)
         self.label_5 = QtWidgets.QLabel(Form)
         self.label_5.setLayoutDirection(QtCore.Qt.LeftToRight)
-        self.label_5.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_5.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_5.setObjectName("label_5")
         self.gridLayout_6.addWidget(self.label_5, 3, 0, 1, 1)
         spacerItem = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
@@ -123,95 +108,14 @@ class Ui_Form(object):
         self.batteryLabel.setObjectName("batteryLabel")
         self.gridLayout_5.addWidget(self.batteryLabel, 0, 8, 1, 1)
         self.label_2 = QtWidgets.QLabel(Form)
-        self.label_2.setAlignment(QtCore.Qt.AlignRight | QtCore.Qt.AlignTrailing | QtCore.Qt.AlignVCenter)
+        self.label_2.setAlignment(QtCore.Qt.AlignRight|QtCore.Qt.AlignTrailing|QtCore.Qt.AlignVCenter)
         self.label_2.setObjectName("label_2")
         self.gridLayout_5.addWidget(self.label_2, 0, 7, 1, 1)
         spacerItem7 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
         self.gridLayout_5.addItem(spacerItem7, 1, 7, 1, 1)
 
         self.retranslateUi(Form)
-        self.ccwButton.clicked.connect(self.ccw)
-        self.takeoffButton.clicked.connect(self.takeoff)
-        self.saveButton.clicked.connect(self.logger.saveFile)
-        self.resetButton.clicked.connect(self.reset)
-        self.rightButton.clicked.connect(self.right)
-        self.leftButton.clicked.connect(self.move_left)
-        self.landButton.clicked.connect(self.land)
-        self.increaseAltButton.clicked.connect(self.increase_alt)
-        self.forwardButton.clicked.connect(self.forward)
-        self.decreaseAltButton.clicked.connect(self.decrease_alt)
-        self.cwButton.clicked.connect(self.cw)
-        self.backwardButton.clicked.connect(self.backward)
-        Form.destroyed.connect(self.quit)
         QtCore.QMetaObject.connectSlotsByName(Form)
-        self.toggleButtonEnabled()
-
-    def forward(self):
-        self.drone.move(forward=1)
-        print("moving drone forward")
-
-    def backward(self):
-        self.drone.move(backward=1)
-        print("moving drone backward")
-
-    def right(self):
-        self.drone.move(right=1)
-        print("moving drone right")
-
-    def move_left(self):
-        self.drone.move(left=1)
-        print("moving drone left")
-
-    def cw(self):
-        self.drone.move(cw=1)
-        print("rotating clockwise")
-
-    def ccw(self):
-        self.drone.move(ccw=1)
-        print("rotating counter-clockwise")
-
-    def increase_alt(self):
-        self.drone.move(up=1)
-        print("increasing altitude")
-
-    def decrease_alt(self):
-        self.drone.move(down=1)
-        print("decreasing altitude")
-
-    def takeoff(self):
-        self.toggleButtonEnabled()
-        self.logger = Logger()
-        self.begin_log()
-        while not self.drone.state.fly_mask:
-            self.drone.takeoff()
-        print("taking off")
-
-    def land(self):
-        self.toggleButtonEnabled()
-        while self.drone.state.fly_mask:
-            self.drone.land()
-        self.logger.currently_logging = False
-        print("landing")
-
-    def reset(self):
-        if not self.drone.state.fly_mask:
-            self.drone.state.emergency_mask = 0
-        print("drone reset")
-
-    def begin_log(self):
-        "Starts the thread and runs log_data below"
-        self.logger.currently_logging = True
-        log_thread = Thread(target=self.log_data)
-        log_thread.start()
-
-    def log_data(self):
-        "Writes data to the CSV every .25 seconds"
-        while self.logger.currently_logging:
-            self.logger.writer([self.logger.time, self.drone.navdata.demo.vx, self.drone.navdata.demo.vy,
-                                self.drone.navdata.demo.vz, self.drone.navdata.demo.theta, self.drone.navdata.demo.phi,
-                                self.drone.navdata.demo.psi, self.drone.navdata.demo.altitude])
-            sleep(.25)
-            self.logger.time += .25
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
@@ -231,72 +135,41 @@ class Ui_Form(object):
         self.label_3.setText(_translate("Form", "Y Velocity:"))
         self.zVelLabel.setText(_translate("Form", "TextLabel"))
         self.label_5.setText(_translate("Form", "Z Velocity:"))
-        self.cwButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Rotate the drone clockwise (E)</p></body></html>"))
+        self.cwButton.setToolTip(_translate("Form", "<html><head/><body><p>Rotate the drone clockwise (E)</p></body></html>"))
         self.cwButton.setText(_translate("Form", "Clockwise"))
         self.cwButton.setShortcut(_translate("Form", "E"))
-        self.leftButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Move the drone left (A)</p></body></html>"))
+        self.leftButton.setToolTip(_translate("Form", "<html><head/><body><p>Move the drone left (A)</p></body></html>"))
         self.leftButton.setText(_translate("Form", "Left"))
         self.leftButton.setShortcut(_translate("Form", "A"))
-        self.rightButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Move the drone right (D)</p></body></html>"))
+        self.rightButton.setToolTip(_translate("Form", "<html><head/><body><p>Move the drone right (D)</p></body></html>"))
         self.rightButton.setText(_translate("Form", "Right"))
         self.rightButton.setShortcut(_translate("Form", "D"))
-        self.backwardButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Move the drone backward (S)</p></body></html>"))
+        self.backwardButton.setToolTip(_translate("Form", "<html><head/><body><p>Move the drone backward (S)</p></body></html>"))
         self.backwardButton.setText(_translate("Form", "Backward"))
         self.backwardButton.setShortcut(_translate("Form", "S"))
-        self.ccwButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Rotate the drone counter clockwise (Q)</p></body></html>"))
+        self.ccwButton.setToolTip(_translate("Form", "<html><head/><body><p>Rotate the drone counter clockwise (Q)</p></body></html>"))
         self.ccwButton.setText(_translate("Form", "AntiClockwise"))
         self.ccwButton.setShortcut(_translate("Form", "Q"))
-        self.forwardButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Move the drone forward (W)</p></body></html>"))
+        self.forwardButton.setToolTip(_translate("Form", "<html><head/><body><p>Move the drone forward (W)</p></body></html>"))
         self.forwardButton.setText(_translate("Form", "Forward"))
         self.forwardButton.setShortcut(_translate("Form", "W"))
-        self.decreaseAltButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Decrease the drone\'s altitude (C)</p></body></html>"))
+        self.decreaseAltButton.setToolTip(_translate("Form", "<html><head/><body><p>Decrease the drone\'s altitude (C)</p></body></html>"))
         self.decreaseAltButton.setText(_translate("Form", "Decrease Altitude"))
         self.decreaseAltButton.setShortcut(_translate("Form", "C"))
-        self.increaseAltButton.setToolTip(
-            _translate("Form", "<html><head/><body><p>Increase the drone\'s altitude (space)</p></body></html>"))
+        self.increaseAltButton.setToolTip(_translate("Form", "<html><head/><body><p>Increase the drone\'s altitude (space)</p></body></html>"))
         self.increaseAltButton.setText(_translate("Form", "Increase Altitude"))
         self.increaseAltButton.setShortcut(_translate("Form", "Space"))
         self.saveButton.setText(_translate("Form", "Save"))
         self.batteryLabel.setText(_translate("Form", "TextLabel"))
         self.label_2.setText(_translate("Form", "Battery:"))
 
-    def quit(self):
-        self.drone.close()
-        self.logger.currently_logging = False
-        # sys.exit(app.exec_());
-
-    def toggleButtonEnabled(self):
-        self.ccwButton.setEnabled(not self.ccwButton.isEnabled())
-        self.cwButton.setEnabled(not self.cwButton.isEnabled())
-        self.forwardButton.setEnabled(not self.forwardButton.isEnabled())
-        self.rightButton.setEnabled(not self.rightButton.isEnabled())
-        self.leftButton.setEnabled(not self.leftButton.isEnabled())
-        self.backwardButton.setEnabled(not self.backwardButton.isEnabled())
-        self.increaseAltButton.setEnabled(not self.increaseAltButton.isEnabled())
-        self.decreaseAltButton.setEnabled(not self.decreaseAltButton.isEnabled())
-        self.landButton.setEnabled(not self.landButton.isEnabled())
-        self.takeoffButton.setEnabled(not self.takeoffButton.isEnabled())
-
-    def update_labels(self):
-        self.xVelLabel.setText(self.drone.navdata.demo.vx)
-        self.yVelLabel.setText(self.drone.navdata.demo.vy)
-        self.zVelLabel.setText(self.drone.navdata.demo.vz)
-        self.batteryLabel.setText(self.drone.navdata.demo.vbat_flying_percentage)
-
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
