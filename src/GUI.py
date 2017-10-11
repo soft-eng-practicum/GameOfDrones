@@ -40,7 +40,7 @@ class App(QWidget):
 
         forwards_btn = QPushButton('\u25b2', self)
         forwards_btn.setToolTip('Moves the drone forward')
-        forwards_btn.move(100, 0)
+        forwards_btn.move(100, 630)
         forwards_btn.clicked.connect(self.forward)
 
         backwards_btn = QPushButton('\u25bc', self)

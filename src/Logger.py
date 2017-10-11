@@ -1,4 +1,7 @@
-from datetime import date
+import shutil
+from datetime import datetime
+
+import os
 
 
 class Logger:
@@ -7,7 +10,7 @@ class Logger:
         self.currently_logging = False
         self.file = "output.csv"
         with open(self.file, 'w') as f:
-            f.write("Flight log {}\n".format(date.today()))
+            f.write("Flight log {}\n".format(datetime.now().strftime('%Y-%m-%d %H:%M:%S')))
         self.writer(['time', 'x_vel', 'y_vel', 'z_vel', 'pitch', 'roll', 'yaw', 'altitude'])
         self.time = 0
 
@@ -16,3 +19,10 @@ class Logger:
         with open(self.file, 'a') as f:
             info = [str(i) for i in info]
             f.write("{}\n".format(",".join(info)))
+
+    def saveFile(self):
+        if os.path.isfile("output.csv"):
+            shutil.copy("output.csv", "Flight log {}.csv".format(datetime.now().strftime('%Y-%m-%d %H-%M')))
+            os.remove("output.csv")
+        else:
+            print("No data to save - fly the drone again")
