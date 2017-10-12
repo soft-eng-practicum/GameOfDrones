@@ -20,7 +20,7 @@ class Ui_Form(object):
         self.drone = ARDrone(connect=True)
 
         self.drone.send(at.CONFIG('general:navdata_demo', True))
-        self.drone.navdata_ready.wait()
+        # self.drone.navdata_ready.wait()
 
         # self.drone.state.video_thread_on = 0
 
@@ -33,7 +33,7 @@ class Ui_Form(object):
         self.gridLayout = QtWidgets.QGridLayout()
         self.gridLayout.setObjectName("gridLayout")
         self.resetButton = QtWidgets.QPushButton(Form)
-        self.resetButton.setEnabled(False)
+        # self.resetButton.setEnabled(False)
         self.resetButton.setObjectName("resetButton")
         self.gridLayout.addWidget(self.resetButton, 2, 0, 1, 1)
         self.takeoffButton = QtWidgets.QPushButton(Form)
@@ -119,6 +119,7 @@ class Ui_Form(object):
         self.saveButton = QtWidgets.QPushButton(Form)
         self.saveButton.setObjectName("saveButton")
         self.gridLayout_5.addWidget(self.saveButton, 2, 7, 1, 1)
+        self.saveButton.setEnabled(False)
         self.batteryLabel = QtWidgets.QLabel(Form)
         self.batteryLabel.setObjectName("batteryLabel")
         self.gridLayout_5.addWidget(self.batteryLabel, 0, 8, 1, 1)
@@ -132,7 +133,7 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         self.ccwButton.clicked.connect(self.ccw)
         self.takeoffButton.clicked.connect(self.takeoff)
-        self.saveButton.clicked.connect(self.logger.saveFile)
+        self.saveButton.clicked.connect(self.save)
         self.resetButton.clicked.connect(self.reset)
         self.rightButton.clicked.connect(self.right)
         self.leftButton.clicked.connect(self.move_left)
@@ -193,9 +194,13 @@ class Ui_Form(object):
         self.logger.currently_logging = False
         print("landing")
 
+    def save(self):
+        self.logger.saveFile()
+
     def reset(self):
-        if not self.drone.state.fly_mask:
-            self.drone.state.emergency_mask = 0
+        # self.drone
+        # if not self.drone.state.fly_mask:
+        #     self.drone.state.emergency_mask = 0
         print("drone reset")
 
     def begin_log(self):
@@ -283,6 +288,7 @@ class Ui_Form(object):
         self.decreaseAltButton.setEnabled(not self.decreaseAltButton.isEnabled())
         self.landButton.setEnabled(not self.landButton.isEnabled())
         self.takeoffButton.setEnabled(not self.takeoffButton.isEnabled())
+        self.saveButton.setEnabled(not self.saveButton.isEnabled())
 
     def update_labels(self):
         self.xVelLabel.setText(self.drone.navdata.demo.vx)
