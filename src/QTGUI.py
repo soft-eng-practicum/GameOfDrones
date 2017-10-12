@@ -198,6 +198,7 @@ class Ui_Form(object):
         self.logger.saveFile()
 
     def reset(self):
+        # self.drone.send(at.CALIB())
         # self.drone
         # if not self.drone.state.fly_mask:
         #     self.drone.state.emergency_mask = 0

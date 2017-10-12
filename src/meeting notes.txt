@@ -1,0 +1,13 @@
+Add units to csv header
+
+Saving file to iPad
+
+get specific fields from Dr. Stackpole (emailed documentation after our demo 10-12-2017)
+
+Fix reset/calibrate
+
+Video not required
+
+Update data fields on GUI
+    (maybe rolling average or delayed display so not constantly updating)
+
