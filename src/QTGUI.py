@@ -41,7 +41,7 @@ class Ui_Form(object):
         self.takeoffButton.setObjectName("takeoffButton")
         self.gridLayout.addWidget(self.takeoffButton, 0, 0, 1, 1)
         self.landButton = QtWidgets.QPushButton(Form)
-        # self.landButton.setEnabled(False)
+        self.landButton.setEnabled(False)
         self.landButton.setObjectName("landButton")
         self.gridLayout.addWidget(self.landButton, 1, 0, 1, 1)
         self.gridLayout_5.addLayout(self.gridLayout, 2, 5, 1, 1)
@@ -197,11 +197,16 @@ class Ui_Form(object):
     def save(self):
         self.logger.saveFile()
 
+    def at_ref(self, emergency=False):
+        p = 0b10001010101000000000000000000
+
+        if emergency:
+            p += 0b0100000000
+        at("REF", self, [p])
+
     def reset(self):
-        # self.drone.send(at.CALIB())
-        # self.drone
-        # if not self.drone.state.fly_mask:
-        #     self.drone.state.emergency_mask = 0
+        self.at(self.at_ref, False, True)
+        self.at(self.at_ref, False, False)
         print("drone reset")
 
     def begin_log(self):
