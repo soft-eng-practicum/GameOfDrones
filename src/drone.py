@@ -8,7 +8,7 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 
-class Ui_Form(object):
+class App(object):
     def setupUi(self, Form):
         Form.setObjectName("Form")
         Form.resize(776, 567)
@@ -26,7 +26,7 @@ class Ui_Form(object):
         self.takeoffButton.setObjectName("takeoffButton")
         self.gridLayout.addWidget(self.takeoffButton, 0, 0, 1, 1)
         self.landButton = QtWidgets.QPushButton(Form)
-        self.landButton.setEnabled(False)
+        self.landButton.setEnabled(True)
         self.landButton.setObjectName("landButton")
         self.gridLayout.addWidget(self.landButton, 1, 0, 1, 1)
         self.gridLayout_5.addLayout(self.gridLayout, 2, 5, 1, 1)
@@ -117,6 +117,9 @@ class Ui_Form(object):
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
+    def toggleEnabled(self):
+        pass
+
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
@@ -168,7 +171,7 @@ if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
-    ui = Ui_Form()
+    ui = App()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())

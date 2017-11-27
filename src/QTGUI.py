@@ -25,8 +25,8 @@ class Ui_Form(object):
         # self.drone.state.video_thread_on = 0
 
     def setupUi(self, Form):
-        Form.setObjectName("Form")
-        Form.resize(776, 567)
+        Form.setObjectName("GameOfDrones GUI")
+        Form.resize(500, 300)
         Form.setMouseTracking(False)
         self.gridLayout_5 = QtWidgets.QGridLayout(Form)
         self.gridLayout_5.setObjectName("gridLayout_5")
@@ -180,11 +180,16 @@ class Ui_Form(object):
         print("decreasing altitude")
 
     def takeoff(self):
-        self.toggleButtonEnabled()
-        self.logger = Logger()
-        self.begin_log()
-        while not self.drone.state.fly_mask:
+        try:
             self.drone.takeoff()
+        except:
+            print('Not connected to a drone')
+            return
+        if self.drone.navdata:
+            self.toggleButtonEnabled()
+            self.logger = Logger()
+            self.begin_log()
+
         print("taking off")
 
     def land(self):
@@ -226,7 +231,7 @@ class Ui_Form(object):
 
     def retranslateUi(self, Form):
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("GameOfDrones GUI", "GameOfDrones GUI"))
         self.resetButton.setToolTip(_translate("Form", "<html><head/><body><p>Reset (P)</p></body></html>"))
         self.resetButton.setText(_translate("Form", "Reset"))
         self.resetButton.setShortcut(_translate("Form", "P"))
@@ -236,12 +241,12 @@ class Ui_Form(object):
         self.landButton.setToolTip(_translate("Form", "<html><head/><body><p>Land (L)</p></body></html>"))
         self.landButton.setText(_translate("Form", "Land"))
         self.landButton.setShortcut(_translate("Form", "L"))
-        self.label.setText(_translate("Form", "X Velocity:"))
-        self.xVelLabel.setText(_translate("Form", "TextLabel"))
-        self.yVelLabel.setText(_translate("Form", "TextLabel"))
-        self.label_3.setText(_translate("Form", "Y Velocity:"))
-        self.zVelLabel.setText(_translate("Form", "TextLabel"))
-        self.label_5.setText(_translate("Form", "Z Velocity:"))
+        # self.label.setText(_translate("Form", "X Velocity:"))
+        # self.xVelLabel.setText(_translate("Form", "TextLabel"))
+        # self.yVelLabel.setText(_translate("Form", "TextLabel"))
+        # self.label_3.setText(_translate("Form", "Y Velocity:"))
+        # self.zVelLabel.setText(_translate("Form", "TextLabel"))
+        # self.label_5.setText(_translate("Form", "Z Velocity:"))
         self.cwButton.setToolTip(
             _translate("Form", "<html><head/><body><p>Rotate the drone clockwise (E)</p></body></html>"))
         self.cwButton.setText(_translate("Form", "Clockwise"))
@@ -275,8 +280,8 @@ class Ui_Form(object):
         self.increaseAltButton.setText(_translate("Form", "Increase Altitude"))
         self.increaseAltButton.setShortcut(_translate("Form", "Space"))
         self.saveButton.setText(_translate("Form", "Save"))
-        self.batteryLabel.setText(_translate("Form", "TextLabel"))
-        self.label_2.setText(_translate("Form", "Battery:"))
+        # self.batteryLabel.setText(_translate("Form", "TextLabel"))
+        # self.label_2.setText(_translate("Form", "Battery:"))
 
     def quit(self):
         self.drone.close()
@@ -305,10 +310,10 @@ class Ui_Form(object):
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     Form = QtWidgets.QWidget()
     ui = Ui_Form()
     ui.setupUi(Form)
     Form.show()
     sys.exit(app.exec_())
+
