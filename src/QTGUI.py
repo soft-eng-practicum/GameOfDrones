@@ -41,7 +41,7 @@ class Ui_Form(object):
         self.takeoffButton.setObjectName("takeoffButton")
         self.gridLayout.addWidget(self.takeoffButton, 0, 0, 1, 1)
         self.landButton = QtWidgets.QPushButton(Form)
-        self.landButton.setEnabled(False)
+        self.landButton.setEnabled(True)
         self.landButton.setObjectName("landButton")
         self.gridLayout.addWidget(self.landButton, 1, 0, 1, 1)
         self.gridLayout_5.addLayout(self.gridLayout, 2, 5, 1, 1)
@@ -181,6 +181,8 @@ class Ui_Form(object):
 
     def takeoff(self):
         try:
+            print("takeoff")
+            self.toggleButtonEnabled()
             self.drone.takeoff()
         except:
             print('Not connected to a drone')

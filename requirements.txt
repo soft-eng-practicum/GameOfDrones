@@ -1,4 +1,4 @@
 pyardrone==0.6.1
-PyQt5==5.9
+PyQt5==5.9.2
 sip==4.19.3
 
